@@ -9,13 +9,15 @@
     />
     <meta charset="UTF-8" />
     <link href="src/style.css" rel="stylesheet">
+    
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>What's the Weather?</title>
   </head>
   <body>
-     <script src="script.js"></script>
+        
     <div class="container">
       <div class="weather-app">
       <h1>Boston, Massachusetts</h1>
@@ -68,8 +70,10 @@
         </ul>
       </div>
       </div>
-
-      <input type="text" placeholder="enter a city" />
+      <form id="input-city">
+      <input type="text" id="city-text-input" placeholder="enter a city"><input type="submit" value="Search">
+      </form>
+      <button type="button" class="btn btn-secondary">Locate Me</button>
       <div class="form-check form-switch">
         <input
           class="form-check-input"
@@ -83,5 +87,6 @@
       </div>
       </div>
     </div>
+ <script src="script.js"></script>
   </body>
 </html>
