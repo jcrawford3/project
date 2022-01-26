@@ -1,39 +1,50 @@
-let weather = {
-  paris: {
-    temp: 19.7,
-    humidity: 80,
-  },
-  tokyo: {
-    temp: 17.3,
-    humidity: 50,
-  },
-  lisbon: {
-    temp: 30.2,
-    humidity: 20,
-  },
-  'san francisco': {
-    temp: 20.9,
-    humidity: 100,
-  },
-  moscow: {
-    temp: -5,
-    humidity: 20,
-  },
-};
+function formatDate() {
+  let h3 = document.querySelector("h3");
+  let now = new Date();
 
-let city = prompt('Enter a city');
-city = city.toLowerCase();
-if (weather[city] !== undefined) {
-  let temperature = weather[city].temp;
-  let humidity = weather[city].humidity;
-  let celsiusTemperature = Math.round(temperature);
-  let fahrenheitTemperature = Math.round((temperature * 9) / 5 + 32);
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
-  alert(
-    `It is currently ${celsiusTemperature}°C (${fahrenheitTemperature}°F) in ${city} with a humidity of ${humidity}%`
-  );
-} else {
-  alert(
-    `Sorry we don't know the weather for your city, try going to https//www.google.com/search?q=weather+${city}`
-  );
+  let day = days[now.getDay()];
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+
+  h3.innerHTML = `Today is ${day} ${hours}:${minutes}`;
 }
+
+formatDate();
+
+function showCity(event) {
+  event.preventDefault();
+  let enterCity = document.querySelector("#city-text-input");
+
+  let h1 = document.querySelector("h1");
+  h1.innerHTML = `City is ${enterCity.value}`;
+}
+
+let inputCity = document.querySelector("#input-city");
+
+inputCity.addEventListener("submit", showCity);
+
+function findPosition(position) {
+  console.log(position.coords.latitude);
+  console.log(position.coords.longitude);
+}
+
+navigator.geolocation.getCurrentPosition(findPosition);
+
+let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Boston&appid=0821ab50d69ba23a98b1bd9d0cf0c1e4&units=metric`;
+
+function showTemperature(response) {
+  let h2 = document.querySelector("h2");
+  h2.innerHTML = `${response.data.main.temp}`;
+}
+
+axios.get(`${apiUrl}`).then(showTemperature);
