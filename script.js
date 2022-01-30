@@ -21,30 +21,40 @@ function formatDate() {
 
 formatDate();
 
-function showCity(event) {
-  event.preventDefault();
-  let enterCity = document.querySelector("#city-text-input");
+function showTemperature(response) {
+  document.querySelector("#city").innerHTML = response.data.name;
+  document.querySelector("#temperature").innerHTML = Math.round(
+    response.data.main.temp
+  );
+}
 
-  let h1 = document.querySelector("h1");
-  h1.innerHTML = `City is ${enterCity.value}`;
+function searchCity(city) {
+  let apiKey = "0821ab50d69ba23a98b1bd9d0cf0c1e4";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showTemperature);
+}
+
+function showSubmit(event) {
+  event.preventDefault();
+  let city = document.querySelector("#city-text-input").value;
+  searchCity(city);
+}
+
+function searchLocation(position) {
+  let apiKey = "0821ab50d69ba23a98b1bd9d0cf0c1e4";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}units=metric`;
+  axios.get(apiUrl).then(showTemperature);
+}
+
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
 let inputCity = document.querySelector("#input-city");
+inputCity.addEventListener("submit", showSubmit);
 
-inputCity.addEventListener("submit", showCity);
+let currentLocationButton = document.querySelector("#current-location-btn");
+currentLocationButton.addEventListener("click", getCurrentLocation);
 
-function findPosition(position) {
-  console.log(position.coords.latitude);
-  console.log(position.coords.longitude);
-}
-
-navigator.geolocation.getCurrentPosition(findPosition);
-
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Boston&appid=0821ab50d69ba23a98b1bd9d0cf0c1e4&units=metric`;
-
-function showTemperature(response) {
-  let h2 = document.querySelector("h2");
-  h2.innerHTML = `${response.data.main.temp}`;
-}
-
-axios.get(`${apiUrl}`).then(showTemperature);
+searchCity("New York");
